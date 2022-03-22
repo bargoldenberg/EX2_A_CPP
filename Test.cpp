@@ -17,101 +17,88 @@ using namespace ariel;
 #include <stdexcept>
 using namespace std;
 
-/**
- * Returns the input string without the whitespace characters: space, newline and tab.
- * Requires std=c++2a.
- */
-string nospaces(string input) {
-	std::erase(input, ' ');
-	std::erase(input, '\t');
-	std::erase(input, '\n');
-	std::erase(input, '\r');
-	return input;
-}
 
-/**
- * @brief For some reason the code wont work when i write it nice, it only works when everything is in one line.
- * 
- */
 TEST_CASE("Good input"){
 	Notebook nb;
+	/*
+	basic write, read and erase horizontaly
+	*/
 	nb.write(1,1,1,Direction::Horizontal,"a");
+	//test1
 	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
 	nb.write(1,1,2,Direction::Horizontal,"a");
+	//test2
 	CHECK(nb.read(1,1,1,Direction::Horizontal,2)=="aa");
 	nb.erase(1,1,1,Direction::Horizontal,1);
-	CHECK(nb.read(1,1,2,Direction::Horizontal,2)=="_a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
-	nb.write(1,1,1,Direction::Horizontal,"a");
-	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
+	//test3
+	CHECK(nb.read(1,1,2,Direction::Horizontal,2)=="~a");
+	/*
+	basic write, read and erase verticaly
+	*/
+	nb.write(2,1,1,Direction::Vertical,"a");
+	//test4
+	CHECK(nb.read(2,1,1,Direction::Vertical,3)=="a\n"
+												"_\n"
+												"_\n");
+	nb.erase(2,1,1,Direction::Vertical,1);
+	//test5
+	CHECK(nb.read(2,1,1,Direction::Vertical,3)=="~\n"
+												"_\n"
+												"_\n");
+	/*
+	Advanced read write, and erase horizontaly
+	*/
+	nb.write(3,1,1,Direction::Horizontal,"Hello, World!!");
+	//test6
+	CHECK(nb.read(3,1,1,Direction::Horizontal,14)=="Hello, World!!");
+	nb.erase(3,1,1,Direction::Horizontal,2);
+	//test7
+	CHECK(nb.read(3,1,1,Direction::Horizontal,14)=="~~llo, World!!");
+	nb.write(3,2,1,Direction::Horizontal,"Good, Luck!");
+	/*
+	Advanced read write, and erase verticaly
+	*/
+	//test8
+	CHECK(nb.read(3,1,3,Direction::Vertical,3)=="l\n"
+												"o\n"
+												"_\n");
+	nb.write(3,1,15,Direction::Vertical,"This Text is written vertically");
+	//test9
+	CHECK(nb.read(1,1,1,Direction::Vertical,7)=="T\n"
+												"h\n"
+												"i\n"
+												"s\n"
+												" \n"
+												"T\n"
+												"e\n");
+	/*
+	Test that i can write more that 100 letters vertically
+	*/
+	for(int i=1;i<=101;i++){
+		string s = to_string(i);
+		CHECK_NOTHROW(nb.write(4,i,1,Direction::Vertical,s));
+	}
 
 }
-// TEST_CASE("Good input") {
-// 	/* good test 1*/	
-//     CHECK(nospaces(mat(9, 7, '@', '-')) == nospaces("@@@@@@@@@\n"
-// 													"@-------@\n"
-// 													"@-@@@@@-@\n"
-// 													"@-@---@-@\n"
-// 													"@-@@@@@-@\n"
-// 													"@-------@\n"
-// 													"@@@@@@@@@"));
 
-// }
+TEST_CASE("Bad Input"){
+	Notebook nb;
+	//test10
+	CHECK_THROWS(nb.write(-1,1,1,ariel::Direction::Horizontal,"Hello"));
+	//test11
+	CHECK_THROWS(nb.write(1,-1,1,Direction::Horizontal,"Hello"));
+	//test12
+	CHECK_THROWS(nb.write(1,1,-1,Direction::Horizontal,"Hello"));
+	//test13
+	CHECK_THROWS(nb.write(1,1,1,Direction::Horizontal,"123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101"));
+	//test14
+	CHECK_THROWS(nb.read(1,1,1,Direction::Horizontal,-1));
+	//test15
+	CHECK_THROWS(nb.erase(1,1,1,Direction::Vertical,-1));
+	nb.write(1,1,1,Direction::Horizontal,"a");
+	nb.erase(1,1,1,Direction::Horizontal,1);
+	//test16
+	CHECK_THROWS(nb.write(1,1,1,Direction::Horizontal,"a"));
 
-// TEST_CASE("Bad input") {
-// 	/*ONE OR TWO OF THE ARGUMENTS ARE EVEN*/
-// 	/*------------------------------------*/
-// 	/*test 1*/
-//     CHECK_THROWS(mat(10, 5, '$', '%'));
-//     /*test 2*/
-//     CHECK_THROWS(mat(0, 5, '$', '*'));
-// 	/*test 3*/
-//     CHECK_THROWS(mat(12, 3, '$', '$'));
-// 	/*test 4*/
-// 	CHECK_THROWS(mat(15, 4, '@', '@'));
-// 	/*ONE OR TWO OF THE ARGUMENTS ARE NEGATIVE*/
-// 	/*------------------------------------*/
-// 	/*test 5*/
-//     CHECK_THROWS(mat(-10, 5, '(', ')'));
-// 	/*test 6*/
-//     CHECK_THROWS(mat(-3, 5, '_', '-'));
-// 	/*test 7*/
-// 	CHECK_THROWS(mat(-3, -5, '!', '@'));
-// 	/*test 8*/
-// 	CHECK_THROWS(mat(-7, -5, '!', '@'));
-// }
+
+}
