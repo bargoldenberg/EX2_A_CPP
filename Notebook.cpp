@@ -15,7 +15,7 @@ void Notebook::write(int page,int row, int column, Direction d, string s){
 }
 
 string Notebook::read(int page, int row, int column, Direction d, int length){
-    return "a";
+    return "A";
 }
 void Notebook::erase(int page, int row, int column, Direction d, int length){
 

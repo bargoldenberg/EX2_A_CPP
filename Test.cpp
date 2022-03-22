@@ -75,8 +75,7 @@ TEST_CASE("Good input"){
 	Test that i can write more that 100 letters vertically
 	*/
 	for(int i=1;i<=101;i++){
-		string s = to_string(i);
-		CHECK_NOTHROW(nb.write(4,i,1,Direction::Vertical,s));
+		CHECK_NOTHROW(nb.write(4,i,1,Direction::Vertical,to_string(i)));
 	}
 
 }

@@ -14,8 +14,8 @@ namespace ariel{
         public:
             Notebook();
             void write(int page, int row, int column, Direction d, string s);
-            string read(int page, int row, int column, Direction d, int size);
-            void erase(int page, int row, int column, Direction d, int size);
+            string read(int page, int row, int column, Direction d, int length);
+            void erase(int page, int row, int column, Direction d, int length);
             void show(int page);
     };
 
