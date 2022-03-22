@@ -39,7 +39,7 @@ TEST_CASE("Good input"){
 	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
 	nb.write(1,1,2,Direction::Horizontal,"a");
 	CHECK(nb.read(1,1,1,Direction::Horizontal,2)=="aa");
-	nb.erase(1,1,1,Direction::Horizontal,"a");
+	nb.erase(1,1,1,Direction::Horizontal,1);
 	CHECK(nb.read(1,1,2,Direction::Horizontal,2)=="_a");
 	nb.write(1,1,1,Direction::Horizontal,"a");
 	CHECK(nb.read(1,1,1,Direction::Horizontal,1)=="a");
